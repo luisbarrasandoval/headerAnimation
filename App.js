@@ -1,24 +1,25 @@
 import { StatusBar } from "expo-status-bar";
-import { TextInput, Button, View, KeyboardAvoidingView } from "react-native";
+import { View } from "react-native";
 
 import Contenido from "./components/Contenido";
 import Header from "./components/Header";
+import HeaderProfile from "./components/HeaderProfile";
 import useHeader from "./hooks/useHeader";
 
 export default function App() {
-  const { headerHeight, handler, estiloHeader, estiloScroll } = useHeader(
-    150,
-    80
-  );
+  const { scrollY, scrollHandler, styles } = useHeader({
+    maxHeight: 150,
+    minHeight: 80
+  });
 
   return (
     <View style={{ flex: 1 }}>
       <StatusBar auto />
-      <Header style={estiloHeader} />
+      <Header style={styles.header} />
       <Contenido
-        onScroll={handler}
-        style={estiloScroll}
-        ScrollY={headerHeight}
+        onScroll={scrollHandler}
+        style={styles.scroll}
+        first={<HeaderProfile scrollY={scrollY} />}
       />
     </View>
   );

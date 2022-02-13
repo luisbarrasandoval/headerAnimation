@@ -4,25 +4,30 @@ import {
   useAnimatedStyle,
   interpolate,
   Extrapolate,
-  withSpring,
 } from "react-native-reanimated";
 
-export default function useHeader(maxHeight, minHeight) {
-  const headerHeight = useSharedValue(0);
-  const handler = useAnimatedScrollHandler((event) => {
-    headerHeight.value = event.contentOffset.y;
-  });
+export default function useHeader({
+  maxHeight,
+  minHeight
+}) {
+  const scrollY = useSharedValue(0);
 
-  const estiloHeader = useAnimatedStyle(() => {
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    scrollY.value = event.contentOffset.y;
+  });
+  
+  const styles = {}
+
+  styles.header = useAnimatedStyle(() => {
     const height = interpolate(
-      headerHeight.value,
+      scrollY.value,
       [0, maxHeight - minHeight],
       [maxHeight, minHeight],
       Extrapolate.CLAMP
     );
 
     const zIndex = interpolate(
-      headerHeight.value,
+      scrollY.value,
       [0, 100, 125, 140, 150],
       [0, 0, 0, 0, 1]
     );
@@ -34,9 +39,9 @@ export default function useHeader(maxHeight, minHeight) {
     };
   });
 
-  const estiloScroll = useAnimatedStyle(() => {
+   styles.scroll = useAnimatedStyle(() => {
     const paddingTop = interpolate(
-      headerHeight.value,
+      scrollY.value,
       [0, maxHeight - minHeight],
       [100, minHeight],
       Extrapolate.CLAMP
@@ -47,5 +52,10 @@ export default function useHeader(maxHeight, minHeight) {
     };
   });
 
-  return { headerHeight, handler, estiloHeader, estiloScroll };
+
+  return {
+    scrollY,
+    scrollHandler,
+    styles
+  };
 }

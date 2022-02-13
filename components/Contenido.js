@@ -1,13 +1,9 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
-import Animated, {
-  Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import HeaderProfile from "./HeaderProfile";
 
-export default function Contenido({ onScroll, style, ScrollY }) {
+export default function Contenido({ onScroll, style, first }) {
   return (
     <Animated.ScrollView
       style={[styles.contenido, style]}
@@ -15,24 +11,11 @@ export default function Contenido({ onScroll, style, ScrollY }) {
       onScroll={onScroll}
       scrollEventThrottle={16}
     >
-      <HeaderProfile ScrollY={ScrollY} />
-
+      {first}
       {Array(20)
         .fill(0)
         .map((_, i) => {
-          // const style = useAnimatedStyle(() => {
-          //   const scale = interpolate(
-          //     ScrollY.value,
-          //     [70, 100],
-          //     [1, 0],
-          //     Extrapolate.CLAMP
-          //   );
-
-          //   return {
-          //     transform: [{ scale: scale }],
-          //   };
-          // });
-
+          
           return (
             <View style={styles.info} key={i}>
               <View style={{ flexDirection: "row" }}>

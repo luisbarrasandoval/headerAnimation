@@ -1,40 +1,19 @@
 import { Text, View, StyleSheet } from "react-native";
-import Animated, {
-  Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
 import React from "react";
+import useHeaderProfileAnimation from "../hooks/useHeaderProfileAnimation";
 
-const HeaderProfile = ({ ScrollY }) => {
-  const _style = useAnimatedStyle(() => {
-    const x = interpolate(ScrollY.value, [0, 150], [1, 0]);
-
-    return {
-      opacity: x,
-    };
-  });
-
-  const styleLeftA = useAnimatedStyle(() => {
-    const right = interpolate(ScrollY.value, [0, 150], [0, 82 * 3]);
-    return { transform: [{ translateX: right }] };
-  });
-  const styleLeftB = useAnimatedStyle(() => {
-    const right = interpolate(ScrollY.value, [0, 150], [0, 82 * 2]);
-    return { transform: [{ translateX: right }] };
-  });
-  const styleLeftC = useAnimatedStyle(() => {
-    const right = interpolate(ScrollY.value, [0, 150], [0, 82]);
-    return { transform: [{ translateX: right }] };
-  });
-  const styleLeftD = useAnimatedStyle(() => {
-    const right = interpolate(ScrollY.value, [0, 150], [0, 82]);
-    return { transform: [{ translateX: 0 }] };
+const HeaderProfile = ({ scrollY }) => {
+  
+  const { opacity, buttons } = useHeaderProfileAnimation({
+    scrollY,
+    cbuttons: 4,
+    height: 130,
   });
 
   return (
-    <Animated.View style={[styles.perfil, _style]}>
+    <Animated.View style={[styles.perfil, opacity]}>
       <View style={styles.avatar} />
       <Text style={styles.headerTitle}>@Luis Barra</Text>
       <View
@@ -53,7 +32,7 @@ const HeaderProfile = ({ ScrollY }) => {
               borderRadius: 5,
               backgroundColor: "#1289A7",
             },
-            styleLeftA,
+            buttons.a,
           ]}
         />
 
@@ -65,7 +44,7 @@ const HeaderProfile = ({ ScrollY }) => {
               borderRadius: 5,
               backgroundColor: "#009432",
             },
-            styleLeftB,
+            buttons.b,
           ]}
         />
 
@@ -77,7 +56,7 @@ const HeaderProfile = ({ ScrollY }) => {
               borderRadius: 5,
               backgroundColor: "#EE5A24",
             },
-            styleLeftC,
+            buttons.c,
           ]}
         />
 
@@ -89,7 +68,7 @@ const HeaderProfile = ({ ScrollY }) => {
               borderRadius: 5,
               backgroundColor: "#833471",
             },
-            styleLeftD,
+            buttons.d,
           ]}
         />
       </View>
